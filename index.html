@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Banco carioca</title>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="editions/cariocaedition.js"></script>
+
+	<script type="text/javascript" src="bot.js"></script>
+	<script type="text/javascript" src="monopoly.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+
+<body style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url(images/bgwpp.jpg) repeat center center fixed;">
+	<div id="popupbackground"></div>
+	<div id="popupwrap">
+		<div id="popup">
+			<div style="position: relative;">
+				<div id="popuptext"></div>
+				<div id="popupdrag"></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="statsbackground"></div>
+	<div id="statswrap">
+		<div id="stats">
+			<div style="position: relative;">
+				<img id="statsclose" src="images/close.png" title="Close" alt="x" />
+				<div id="statstext"></div>
+				<div id="statsdrag"></div>
+			</div>
+		</div>
+	</div>
+
+	<p id="noscript">Nota: Erro no JavaScript.</p>
+
+	<div id="refresh">
+		Atualize a página para começar um novo jogo.
+	</div>
+
+	
+
+	<div id="deed">
+		<div id="deed-normal" style="display: none;">
+			<div id="deed-header">
+				<div style="margin: 5px; font-size: 11px;">&nbsp;&nbsp;</div>
+				<div id="deed-name"></div>
+			</div>
+			<table id="deed-table">
+				<tr>
+					<td colspan="2">
+						ALUGUEL&nbsp;$<span id="deed-baserent">12</span>.
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">Com 1 casa</td>
+					<td style="text-align: right;">$&nbsp;&nbsp;&nbsp;<span id="deed-rent1">60</span>.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">Com 2 casas</td>
+					<td style="text-align: right;">$&nbsp;&nbsp;&nbsp;<span id="deed-rent2">180</span>.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">Com 3 casas</td>
+					<td style="text-align: right;">$&nbsp;&nbsp;&nbsp;<span id="deed-rent3">500</span>.</td>
+				</tr>
+				<tr>
+					<td style="text-align: left;">Com 4 casas</td>
+					<td style="text-align: right;">$&nbsp;&nbsp;&nbsp;<span id="deed-rent4">700</span>.</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div style="margin-bottom: 8px;">Com Hotel $<span id="deed-rent5">900</span>.</div>
+						<div>Valor da Hipoteca $<span id="deed-mortgage">80</span>.</div>
+						<div>Valor das Casas $<span id="deed-houseprice">100</span> cada.</div>
+						<div>Hoteis $<span id="deed-hotelprice">100</span> mais 4 casas.</div>
+						<div style="font-size: 9px; font-style: italic; margin-top: 5px;">Se um jogador possui TODOS os Lotes de qualquer Grupo de Cores, o aluguel é dobrado em Lotes Não Melhorados nesse grupo.</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="deed-mortgaged">
+			<div id="deed-mortgaged-name"></div>
+			<p>&bull;</p>
+			<div>HIPOTECADO</div>
+			<div> por $<span id="deed-mortgaged-mortgage">80</span></div>
+			<p>&bull;</p>
+			<div style="font-style: italic; font-size: 13px; margin: 10px;">O cartão deve ser virado deste lado se a propriedade estiver hipotecada</div>
+		</div>
+
+		<div id="deed-special">
+			<div id="deed-special-name"></div>
+			<div id="deed-special-text"></div>
+			<div id="deed-special-footer">
+				Valor da hipoteca
+				<span style="float: right;">$<span id="deed-special-mortgage">100</span>.</span>
+			</div>
+		</div>
+	</div>
+
+	<section class="container">
+		<div class="left-half">
+			<div class="wrapword"><table id="board" style="background-color:#f8f9f1 ;" >
+				  <tr>
+					  <td class="cell board-corner" id="cell20" style="background-image:url(images/park.jpg);background-size:100%;background-position:center;"></td>
+					  <td class="cell board-top" id="cell21" style="background:linear-gradient(to bottom,red 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-top" id="cell22" style="background:linear-gradient(to bottom,#f8f9f1 50%,#f8f9f1 50%);background-image:url(images/chance_icon.png);background-repeat:no-repeat;background-size:40%;background-position:center"></td>
+					  <td class="cell board-top" id="cell23" style="background:linear-gradient(to bottom,red 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-top" id="cell24" style="background:linear-gradient(to bottom,red 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-top" id="cell25" style="background:linear-gradient(to bottom,#f8f9f1 50%,#f8f9f1 50%);background-image:url(images/bike.png);background-repeat:no-repeat;background-size:60%;background-position:top center"></td>
+					  <td class="cell board-top" id="cell26" style="background:linear-gradient(to bottom,yellow 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-top" id="cell27" style="background:linear-gradient(to bottom,yellow 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-top" id="cell28" style="background:linear-gradient(to bottom,#f8f9f1 50%,#f8f9f1 50%);background-image:url(images/canister.png);background-repeat:no-repeat;background-size:60%;background-position:top center"></td>
+					  <td class="cell board-top" id="cell29" style="background:linear-gradient(to bottom,yellow 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-corner" id="cell30" style="background-image:url(images/jail_icon.jpg);background-size:90%;background-position:center;background-color:#f8f9f1"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell19" style="background:linear-gradient(to bottom,orange 30%,#f8f9f1 50%)"></td>
+					  <td colspan="9" rowspan="9" class="board-center"></td>		
+					  <td class="cell board-right" id="cell31" style="background:linear-gradient(to bottom,green 30%,#f8f9f1 50%)"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell18" style="background:linear-gradient(to bottom,orange 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-right" id="cell32" style="background:linear-gradient(to bottom,green 30%,#f8f9f1 50%)"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell17" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/chance_icon.png);background-repeat:no-repeat;background-size:40%;background-position:center"></td>
+					  <td class="cell board-right" id="cell33" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/chance_icon.png);background-repeat:no-repeat;background-size:40%;background-position:center"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell16" style="background:linear-gradient(to bottom,orange 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-right" id="cell34" style="background:linear-gradient(to bottom,green 30%,#f8f9f1 50%)"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell15" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/gun_icon.png);background-repeat:no-repeat;background-size:60%;background-position:top center"></td>
+					  <td class="cell board-right" id="cell35" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/tv_icon.png);background-repeat:no-repeat;background-size:60%;background-position:top center"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell14" style="background:linear-gradient(to bottom,purple 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-right" id="cell36" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/chance_icon.png);background-repeat:no-repeat;background-size:40%;background-position:center"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell13" style="background:linear-gradient(to bottom,purple 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-right" id="cell37" style="background:linear-gradient(to bottom,blue 30%,#f8f9f1 50%)"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell12" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/transport.png);background-repeat:no-repeat;background-size:60%;background-position:top center"></td>
+					  <td class="cell board-right" id="cell38" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/camp_icon.png);background-repeat:no-repeat;background-size:60%;background-position:top center"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-left" id="cell11" style="background:linear-gradient(to bottom,purple 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-right" id="cell39" style="background:linear-gradient(to bottom,blue 30%,#f8f9f1 50%)"></td>
+				  </tr>
+				  <tr>
+					  <td class="cell board-corner" id="cell10" style="background-image:url(images/jake_icon.png);background-size:90%;background-position:center;background-color:#f8f9f1"></td>
+					  <td class="cell board-bottom" id="cell9" style="background:linear-gradient(to bottom,#AACCFF 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-bottom" id="cell8" style="background:linear-gradient(to bottom,#AACCFF 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-bottom" id="cell7" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/chance_icon.png);background-repeat:no-repeat;background-size:40%;background-position:center"></td>
+					  <td class="cell board-bottom" id="cell6" style="background:linear-gradient(to bottom,#AACCFF 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-bottom" id="cell5" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/slot_icon.png);background-repeat:no-repeat;background-size:60%;background-position:top center"></td>
+					  <td class="cell board-bottom" id="cell4" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/bribe.png);background-repeat:no-repeat;background-size:60%;background-position:top center"></td>
+					  <td class="cell board-bottom" id="cell3" style="background:linear-gradient(to bottom,#4B0082 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-bottom" id="cell2" style="background:linear-gradient(to bottom,#f8f9f1 30%,#f8f9f1 50%);background-image:url(images/chance_icon.png);background-repeat:no-repeat;background-size:40%;background-position:center"></td>
+					  <td class="cell board-bottom" id="cell1" style="background:linear-gradient(to bottom,#4B0082 30%,#f8f9f1 50%)"></td>
+					  <td class="cell board-corner" id="cell0" style="background-image:url(images/arrow_icon.jpg);background-position:bottom;background-size:100%"></td>
+				  </tr>
+			  </table></div>
+		</div>
+		<div class="right-half">
+			<div class="wrapword">
+			<div id="moneybarwrap" style="max-width: 220px;"style="background-color:red ;">
+			  <div id="moneybar">
+				  <table>
+					  <tr id="moneybarrow0" class="money-bar-row" >
+						  <td class="moneybararrowcell"><img src="images/arrow.png" id="p0arrow" class="money-bar-arrow" alt=">" /></td>
+						  <td id="p0moneybar" class="moneybarcell">
+							  <div><span id="p0moneyname" >Jogador 0</span>:</div>
+							  <div>$<span id="p0money">1500</span></div>
+						  </td>
+					  </tr>
+					  <tr id="moneybarrow1" class="money-bar-row">
+						  <td class="moneybararrowcell"><img src="images/arrow.png" id="p1arrow" class="money-bar-arrow" alt=">"/></td>
+						  <td id="p1moneybar" class="moneybarcell" style="color: black;font-size: small;">
+							  <div><span id="p1moneyname">Jogador 1</span>:</div>
+							  <div>$<span id="p1money">1500</span></div>
+						  </td>
+					  </tr>
+					  <tr id="moneybarrow2" class="money-bar-row">
+						  <td class="moneybararrowcell"><img src="images/arrow.png" id="p2arrow" class="money-bar-arrow" alt=">" /></td>
+						  <td id="p2moneybar" class="moneybarcell" style="color: black;font-size: small;">
+							  <div><span style="font-size: small;"id="p2moneyname" >Jogador 2</span>:</div>
+							  <div>$<span id="p2money">1500</span></div>
+						  </td>
+					  </tr>
+					  <tr id="moneybarrow3" class="money-bar-row">
+						  <td class="moneybararrowcell"><img src="images/arrow.png" id="p3arrow" class="money-bar-arrow" alt=">" /></td>
+						  <td id="p3moneybar" class="moneybarcell" style="color: black;font-size: small;">
+							  <div><span id="p3moneyname" >Jogador 3</span>:</div>
+							  <div>$<span id="p3money">1500</span></div>
+						  </td>
+					  </tr>
+					  <tr id="moneybarrow4" class="money-bar-row">
+						  <td class="moneybararrowcell"><img src="images/arrow.png" id="p4arrow" class="money-bar-arrow" alt=">" /></td>
+						  <td id="p4moneybar" class="moneybarcell" style="color: black;font-size: small;">
+							  <div><span id="p4moneyname" >Jogador 4</span>:</div>
+							  <div>$<span id="p4money">1500</span></div>
+						  </td>
+					  </tr>
+					  <tr id="moneybarrow5" class="money-bar-row">
+						  <td class="moneybararrowcell"><img src="images/arrow.png" id="p5arrow" class="money-bar-arrow" alt=">" /></td>
+						  <td id="p5moneybar" class="moneybarcell" style="color: black;font-size: small;">
+							  <div><span id="p5moneyname" >Jogador 5</span>:</div>
+							  <div>$<span id="p5money">1500</span></div>
+						  </td>
+					  </tr>
+					  <tr id="moneybarrow6" class="money-bar-row">
+						  <td class="moneybararrowcell"><img src="images/arrow.png" id="p6arrow" class="money-bar-arrow" alt=">" /></td>
+						  <td id="p6moneybar" class="moneybarcell" style="color: black;font-size: small;">
+							  <div><span id="p6moneyname" >Jogador 6</span>:</div>
+							  <div>$<span id="p6money">1500</span></div>
+						  </td>
+					  </tr>
+					  <tr id="moneybarrow7" class="money-bar-row">
+						  <td class="moneybararrowcell"><img src="images/arrow.png" id="p7arrow" class="money-bar-arrow" alt=">" /></td>
+						  <td id="p7moneybar" class="moneybarcell" style="color: black;font-size: small;">
+							  <div><span id="p7moneyname" >Jogador 7</span>:</div>
+							  <div>$<span id="p7money">1500</span></div>
+						  </td>
+					  </tr>
+					  
+					  <tr id="moneybarrow8">
+						  <td style="border: none;" class="moneybararrowcell">&nbsp;</td>
+						  <td style="border: none;">
+							  <input style= "background-color: #f8f9f1;"class="menu-item" type="button" id="viewstats" value="Estatisticas"/>
+						  </td>
+					  </tr>
+				  </table>
+			  </div>
+		  </div>
+		  <div id="control">
+			  <table>
+				  <tr>
+					  <td style="text-align: center; vertical-align: top; border: none;">
+						  <div id="menu">
+							  <table id="menutable" cellspacing="3">
+								  <tr>
+									  <td class="menu-item" id="buy-menu-item">
+										  <a href="javascript:void(0);" title="Visualize alertas e compre a propriedade em que você pousou." style="background-color:red;" onclick="buy()">Comprar</a>
+									  </td>
+									  <td class="menu-item" id="manage-menu-item">
+										  <a href="javascript:void(0);" title="Ver, hipotecar e melhorar sua propriedade." style="background-color:green;">Gerenciar</a>
+									  </td>
+									  <td class="menu-item" id="trade-menu-item">
+										  <a href="javascript:void(0);" title="Troque propriedades com outros jogadores." style="background-color:blue;">Trocar</a>
+									  </td>
+								  </tr>
+							  </table>
+						  </div>
+	  
+						  <div id="buy">
+							  <div style="font-size:small;" id="landed"></div>
+						  </div>
+	  
+						  <div id="manage">
+							  <div id="option">
+								  <div id="buildings" title="Edifícios disponíveis"></div>
+								  <input type="button" value="Comprar casa" id="buyhousebutton"/>
+								  <input type="button" value="Hipotecar" id="mortgagebutton" />
+								  <input type="button" value="Vender casa" id="sellhousebutton"/>
+							  </div>
+							  <div id="owned"></div>
+						  </div>
+					  </td>
+					  <td style="vertical-align: top; border: none;">
+						  <div id="quickstats" style="border:0cm" class="menu-item">
+								  <div><span id="pname" >Jogador 1</span>:</div>
+								  <div><span id="pmoney">$1500</span></div>
+						  </div>
+						  <div>
+							  <div id="die0" title="Dado" class="die die-no-img"></div>
+							  <div id="die1" title="Dado" class="die die-no-img"></div>
+						  </div>
+	  
+					  </td>
+				  </tr><tr>
+					  <td colspan="2" style="border: none">
+						  <div style="padding-top: 8px;">
+							  <input class="bn60" href="\" type="button" id="nextbutton" title="Jogue os dados e mova seu token de acordo." value="Lançar dados"/>
+							  <input type="button" id="resignbutton" title="Se você não pode pagar sua dívida, então você deve desistir do jogo." value="Desistir" onclick="game.resign();" />
+						  </div>
+					  </td>
+				  </tr>
+			  </table>
+		  </div>
+	  
+		  <div id="trade">
+			  <table style="border-spacing: 3px;">
+				  <tr>
+					  <td class="trade-cell">
+						  <div id="trade-leftp-name"></div>
+					  </td>
+					  <td class="trade-cell">
+						  <div id="trade-rightp-name"></div>
+					  </td>
+				  </tr>
+				  <tr>
+					  <td class="trade-cell">
+						  $&nbsp;<input id="trade-leftp-money" value="0" title="Insira o valor para trocar com o outro jogador." />
+					  </td>
+					  <td class="trade-cell">
+						  $&nbsp;<input id="trade-rightp-money" value="0" title="Insira o valor para trocar com o outro jogador." />
+					  </td>
+				  </tr>
+				  <tr>
+					  <td id="trade-leftp-property" class="trade-cell"></td>
+					  <td id="trade-rightp-property" class="trade-cell"></td>
+				  </tr>
+				  <tr>
+					  <td colspan="2" class="trade-cell">
+						  <input type="button" id="proposetradebutton" value="Propor troca" onclick="game.proposeTrade();" title="Troque o dinheiro e as propriedades que estão marcadas acima." />
+						  <input type="button" id="canceltradebutton" value="Cancelar troca" onclick='game.cancelTrade();' title="Cancelar a troca." />
+						  <input type="button" id="accepttradebutton" value="Aceitar troca" onclick="game.acceptTrade();" title="Aceitar a troca." />
+						  <input type="button" id="rejecttradebutton" value="Rejeitar troca" onclick='game.cancelTrade();' title="Rejeitar a troca." />
+					  </td>
+				  </tr>
+			  </table>
+		  </div></div>
+		</div>
+	  </section>
+
+	
+
+	
+	<div id="setup">
+		<div style="margin-bottom: 20px; color:#f8f9f1; font-size: x-large; font-family: Helvetica">
+			<br>Selecione o numero de jogadores: 
+			<select  class="select-box" id="playernumber" title="Selecione o numero de jgoadores da partida." style="max-width: 40px; font-family: Helvetica" >
+				<option>2</option>
+				<option>3</option>
+				<option selected="selecionado">4</option>
+				<option>5</option>
+				<option>6</option>
+			</select>
+		</div>
+
+		<div id="player1input" class="player-input" style="color:#f8f9f1">
+			<input style="max-width: 200px;color: black;" class="select-box" type="text" id="player1name" title="Nome do jogador" maxlength="16" value="Jogador 1" />
+			<select  style="max-width: 120px;" class="select-box" id="player1color" title="Cor do jogador">
+				<option value ="Aqua" style="color: aqua;">Azul claro</option>
+				<option value ="Black" style="color: black;">Preto</option>
+				<option value = "Blue" style="color: blue;">Azul</option>
+				<option value ="Fuchsia" style="color: fuchsia;">Rosa</option>
+				<option value ="Gray" style="color: gray;">Cinza</option>
+				<option value ="Green" style="color: green;">Verde</option>
+				<option value ="Lime" style="color: lime;">Verde claro</option>
+				<option value ="Maroon" style="color: maroon;">Marrom</option>
+				<option value ="Navy" style="color: navy;">Azul escuro</option>
+				<option value ="Olive" style="color: olive;">Verde escuro</option>
+				<option value ="Orange" style="color: orange;">Laranja</option>
+				<option value ="Purple"style="color: purple;">Roxo</option>
+				<option value ="Red" style="color: red;">Vermelho</option>
+				<option value ="Silver"style="color: silver;">Cinza claro</option>
+				<option value ="Teal" style="color: teal;">Ciano</option>
+				<option selected="selected" value ="Yellow" style="color: yellow;">Amarelo</option>
+			</select>
+			<select style="max-width: 120px;" class="select-box" id="player1ai" title="Escolha se esse jogador será controlado por um humano ou bot." onclick="this.value !== '0';">
+				<option value="0" selected="selected">Humano</option>
+				<option value="1">Bot</option>
+			</select>
+		</div>
+
+		<div id="player2input" class="player-input" style="color:#f8f9f1">
+			<input style="max-width: 200px;color: black;" class="select-box" type="text" id="player2name" title="Nome do jogador" maxlength="16" value="Jogador 2" />
+			<select style="max-width: 120px;" class="select-box" id="player2color" title="Cor do jogador">
+				<option value ="Aqua" style="color: aqua;">Azul claro</option>
+				<option value ="Black" style="color: black;">Preto</option>
+				<option selected="selected" value = "Blue" style="color: blue;">Azul</option>
+				<option value ="Fuchsia" style="color: fuchsia;">Rosa</option>
+				<option value ="Gray" style="color: gray;">Cinza</option>
+				<option value ="Green" style="color: green;">Verde</option>
+				<option value ="Lime" style="color: lime;">Verde claro</option>
+				<option value ="Maroon" style="color: maroon;">Marrom</option>
+				<option value ="Navy" style="color: navy;">Azul escuro</option>
+				<option value ="Olive" style="color: olive;">Verde escuro</option>
+				<option value ="Orange" style="color: orange;">Laranja</option>
+				<option value ="Purple"style="color: purple;">Roxo</option>
+				<option value ="Red" style="color: red;">Vermelho</option>
+				<option value ="Silver"style="color: silver;">Cinza claro</option>
+				<option value ="Teal" style="color: teal;">Ciano</option>
+				<option value ="Yellow" style="color: yellow;">Amarelo</option>
+			</select>
+			<select style="max-width: 120px;" class="select-box" id="player2ai" title="Escolha se esse jogador será controlado por um humano ou bot." onclick="this.value !== '0';">
+				<option value="0" selected="selected">Humano</option>
+				<option value="1">Bot</option>
+			</select>
+		</div>
+
+		<div id="player3input" class="player-input" style="color:#f8f9f1">
+			<input style="max-width: 200px;color: black;" class="select-box" type="text" id="player3name" title="Nome do jogador" maxlength="16" value="Jogador 3" />
+			<select style="max-width: 120px;" class="select-box" id="player3color" title="Cor do jogador">
+				<option value ="Aqua" style="color: aqua;">Azul claro</option>
+				<option value ="Black" style="color: black;">Preto</option>
+				<option value = "Blue" style="color: blue;">Azul</option>
+				<option value ="Fuchsia" style="color: fuchsia;">Rosa</option>
+				<option value ="Gray" style="color: gray;">Cinza</option>
+				<option value ="Green" style="color: green;">Verde</option>
+				<option value ="Lime" style="color: lime;">Verde claro</option>
+				<option value ="Maroon" style="color: maroon;">Marrom</option>
+				<option value ="Navy" style="color: navy;">Azul escuro</option>
+				<option value ="Olive" style="color: olive;">Verde escuro</option>
+				<option value ="Orange" style="color: orange;">Laranja</option>
+				<option value ="Purple"style="color: purple;">Roxo</option>
+				<option selected="selected" value ="Red" style="color: red;">Vermelho</option>
+				<option value ="Silver"style="color: silver;">Cinza claro</option>
+				<option value ="Teal" style="color: teal;">Ciano</option>
+				<option value ="Yellow" style="color: yellow;">Amarelo</option>
+			</select>
+			<select style="max-width: 120px;" class="select-box" id="player3ai" title="Escolha se esse jogador será controlado por um humano ou bot." onclick="this.value !== '0';">
+				<option value="0" selected="selected">Humano</option>
+				<option value="1">Bot</option>
+			</select>
+		</div>
+
+		<div id="player4input" class="player-input" style="color:#f8f9f1">
+			<input style="max-width: 200px;color: black;" class="select-box" type="text" id="player4name" title="Nome do jogador" maxlength="16" value="Jogador 4" />
+			<select style="max-width: 120px;" class="select-box" id="player4color" title="Cor do jogador">
+				<option value ="Aqua" style="color: aqua;">Azul claro</option>
+				<option value ="Black" style="color: black;">Preto</option>
+				<option value = "Blue" style="color: blue;">Azul</option>
+				<option value ="Fuchsia" style="color: fuchsia;">Rosa</option>
+				<option value ="Gray" style="color: gray;">Cinza</option>
+				<option value ="Green" style="color: green;">Verde</option>
+				<option selected="selected" value ="Lime" style="color: lime;">Verde claro</option>
+				<option value ="Maroon" style="color: maroon;">Marrom</option>
+				<option value ="Navy" style="color: navy;">Azul escuro</option>
+				<option value ="Olive" style="color: olive;">Verde escuro</option>
+				<option value ="Orange" style="color: orange;">Laranja</option>
+				<option value ="Purple"style="color: purple;">Roxo</option>
+				<option value ="Red" style="color: red;">Vermelho</option>
+				<option value ="Silver"style="color: silver;">Cinza claro</option>
+				<option value ="Teal" style="color: teal;">Ciano</option>
+				<option value ="Yellow" style="color: yellow;">Amarelo</option>
+			</select>
+			<select style="max-width: 120px;" class="select-box" id="player4ai" title="Escolha se esse jogador será controlado por um humano ou bot." onclick="this.value !== '0';">
+				<option value="0" selected="selected">Humano</option>
+				<option value="1">Bot</option>
+			</select>
+		</div>
+
+		<div id="player5input" class="player-input" style="color:#f8f9f1">
+			<input style="max-width: 200px;color: black;" class="select-box" type="text" id="player5name" title="Nome do jogador" maxlength="16" value="Jogador 5" />
+			<select style="max-width: 120px;" class="select-box" id="player5color" title="Cor do jogador">
+				<option value ="Aqua" style="color: aqua;">Azul claro</option>
+				<option value ="Black" style="color: black;">Preto</option>
+				<option value = "Blue" style="color: blue;">Azul</option>
+				<option value ="Fuchsia" style="color: fuchsia;">Rosa</option>
+				<option value ="Gray" style="color: gray;">Cinza</option>
+				<option selected="selected" value ="Green" style="color: green;">Verde</option>
+				<option value ="Lime" style="color: lime;">Verde claro</option>
+				<option value ="Maroon" style="color: maroon;">Marrom</option>
+				<option value ="Navy" style="color: navy;">Azul escuro</option>
+				<option value ="Olive" style="color: olive;">Verde escuro</option>
+				<option value ="Orange" style="color: orange;">Laranja</option>
+				<option value ="Purple"style="color: purple;">Roxo</option>
+				<option value ="Red" style="color: red;">Vermelho</option>
+				<option value ="Silver"style="color: silver;">Cinza claro</option>
+				<option value ="Teal" style="color: teal;">Ciano</option>
+				<option value ="Yellow" style="color: yellow;">Amarelo</option>
+			</select>
+			<select style="max-width: 120px;" class="select-box" id="player5ai" title="Escolha se esse jogador será controlado por um humano ou bot." onclick="this.value !== '0';">
+				<option value="0" selected="selected">Humano</option>
+				<option value="1">Bot</option>
+			</select>
+		</div>
+
+		<div id="player6input" class="player-input" style="color:#f8f9f1">
+			<input style="max-width: 200px;color: black;" class="select-box" type="text" id="player6name" title="Nome do jogador" maxlength="16" value="Jogador 6" />
+			<select style="max-width: 120px;" class="select-box" id="player6color" title="Cor do jogador">
+				<option value ="Aqua" style="color: aqua;">Azul claro</option>
+				<option value ="Black" style="color: black;">Preto</option>
+				<option value = "Blue" style="color: blue;">Azul</option>
+				<option value ="Fuchsia" style="color: fuchsia;">Rosa</option>
+				<option value ="Gray" style="color: gray;">Cinza</option>
+				<option value ="Green" style="color: green;">Verde</option>
+				<option value ="Lime" style="color: lime;">Verde claro</option>
+				<option value ="Maroon" style="color: maroon;">Marrom</option>
+				<option value ="Navy" style="color: navy;">Azul escuro</option>
+				<option value ="Olive" style="color: olive;">Verde escuro</option>
+				<option value ="Orange" style="color: orange;">Laranja</option>
+				<option value ="Purple"style="color: purple;">Roxo</option>
+				<option value ="Red" style="color: red;">Vermelho</option>
+				<option value ="Silver"style="color: silver;">Cinza claro</option>
+				<option selected="selected" value ="Teal" style="color: teal;">Ciano</option>
+				<option value ="Yellow" style="color: yellow;">Amarelo</option>
+			</select>
+			<select style="max-width: 120px;" class="select-box" id="player6ai" title="Escolha se esse jogador será controlado por um humano ou bot." onclick="this.value !== '0';">
+				<option value="0" selected="selected">Humano</option>
+				<option value="1">Bot</option>
+			</select>
+		</div>
+
+		<div style="margin: 20px 0px;">
+			<input class="bn60" href="\" type="button" value="Começar jogo" onclick="setup();" title="Começar jogo" />
+		</div>
+
+	</div>
+
+</body>
+</html>
